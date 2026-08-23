@@ -4,6 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { buildApp } from "../../src/app.js";
 import { AppDataSource } from "../../src/config/database.js";
+import { connectRedis, disconnectRedis } from "../../src/config/redis.js";
 import { closeEmailQueue } from "../../src/queue/queues/email.queue.js";
 
 const integration = process.env.RUN_INTEGRATION === "true" ? describe : describe.skip;
@@ -76,17 +77,48 @@ integration("TaskFlow complete HTTP API workflow", () => {
     await AppDataSource.initialize();
     await AppDataSource.dropDatabase();
     await AppDataSource.runMigrations();
+    await connectRedis();
     await app.ready();
   });
 
   afterAll(async () => {
     await app.close();
     await closeEmailQueue();
+    await disconnectRedis();
     if (AppDataSource.isInitialized) await AppDataSource.destroy();
+  });
+
+  it("serves liveness, readiness, and OpenAPI documentation endpoints", async () => {
+    expect((await api("GET", "/health")).statusCode).toBe(200);
+    expect((await api("GET", "/ready")).statusCode).toBe(200);
+    expect((await api("GET", "/docs/json")).statusCode).toBe(200);
+    expect((await api("GET", "/docs")).statusCode).toBe(200);
   });
 
   it("authenticates and stores two admins and two members through the API", async () => {
     users.adminA = await register("Admin A", `admin-a-${suffix}@test.local`, `org-a-${suffix}`);
+    expect(
+      (
+        await api("POST", "/auth/register", {
+          name: "Invalid",
+          email: "not-an-email",
+          password,
+          organization_name: "Invalid",
+          organization_slug: "invalid",
+        })
+      ).statusCode,
+    ).toBe(400);
+    expect(
+      (
+        await api("POST", "/auth/register", {
+          name: "Admin A",
+          email: users.adminA.email,
+          password,
+          organization_name: "Duplicate",
+          organization_slug: `duplicate-${suffix}`,
+        })
+      ).statusCode,
+    ).toBe(409);
     users.adminB = await register("Admin B", `admin-b-${suffix}@test.local`, `org-b-${suffix}`);
 
     const memberAEmail = `member-a-${suffix}@test.local`;
