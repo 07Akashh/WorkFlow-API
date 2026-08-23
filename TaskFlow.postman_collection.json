@@ -1,38 +1,31 @@
 {
   "info": {
-    "name": "TaskFlow API",
+    "name": "TaskFlow API - seeded demo",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:3000" },
     { "key": "accessToken", "value": "" },
+    { "key": "refreshToken", "value": "" },
+    { "key": "demoEmail", "value": "aonecreations1+alicejohnson@gmail.com" },
+    { "key": "demoPassword", "value": "TaskFlowDev@123" },
+    { "key": "organizationSlug", "value": "acme-labs" },
+    { "key": "assigneeId", "value": "433392f5-1b94-4534-aec5-fafdef64b22d" },
     { "key": "projectId", "value": "" },
     { "key": "taskId", "value": "" },
-    { "key": "userId", "value": "" },
     { "key": "jobId", "value": "" }
   ],
   "item": [
     {
-      "name": "Register",
-      "request": {
-        "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "url": "{{baseUrl}}/auth/register",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"Ada Lovelace\",\n  \"email\": \"ada@example.com\",\n  \"password\": \"StrongPassword123!\",\n  \"organization_name\": \"Example Org\",\n  \"organization_slug\": \"example-org\"\n}"
-        }
-      }
-    },
-    {
-      "name": "Login",
+      "name": "1. Login as seeded Alice (acme-labs)",
       "event": [
         {
           "listen": "test",
           "script": {
             "exec": [
               "const body = pm.response.json();",
-              "pm.collectionVariables.set('accessToken', body.access_token);"
+              "pm.collectionVariables.set('accessToken', body.access_token);",
+              "pm.collectionVariables.set('refreshToken', body.refresh_token);"
             ]
           }
         }
@@ -43,77 +36,84 @@
         "url": "{{baseUrl}}/auth/login",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"email\": \"ada@example.com\",\n  \"password\": \"StrongPassword123!\",\n  \"organization_slug\": \"example-org\"\n}"
+          "raw": "{\n  \"email\": \"{{demoEmail}}\",\n  \"password\": \"{{demoPassword}}\",\n  \"organization_slug\": \"{{organizationSlug}}\"\n}"
         }
       }
     },
     {
-      "name": "Projects",
-      "item": [
-        {
-          "name": "Create project",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "url": "{{baseUrl}}/projects",
-            "body": {
-              "mode": "raw",
-              "raw": "{\"name\":\"Website refresh\",\"description\":\"Q4 project\"}"
-            }
-          }
-        },
-        {
-          "name": "List projects",
-          "request": {
-            "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/projects?limit=20"
-          }
-        }
-      ]
+      "name": "2. Current user",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+        "url": "{{baseUrl}}/auth/me"
+      }
     },
     {
-      "name": "Tasks",
-      "item": [
+      "name": "3. Create project",
+      "event": [
         {
-          "name": "Create task",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "url": "{{baseUrl}}/projects/{{projectId}}/tasks",
-            "body": {
-              "mode": "raw",
-              "raw": "{\"title\":\"Create wireframes\",\"priority\":\"high\"}"
-            }
-          }
-        },
+          "listen": "test",
+          "script": { "exec": ["pm.collectionVariables.set('projectId', pm.response.json().id);"] }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/projects",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Postman demo project\",\"description\":\"Created by the TaskFlow collection\"}"
+        }
+      }
+    },
+    {
+      "name": "4. Create task",
+      "event": [
         {
-          "name": "Assign user",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "url": "{{baseUrl}}/tasks/{{taskId}}/assignments",
-            "body": { "mode": "raw", "raw": "{\"user_id\":\"{{userId}}\"}" }
-          }
-        },
+          "listen": "test",
+          "script": { "exec": ["pm.collectionVariables.set('taskId', pm.response.json().id);"] }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/projects/{{projectId}}/tasks",
+        "body": { "mode": "raw", "raw": "{\"title\":\"Postman demo task\",\"priority\":\"high\"}" }
+      }
+    },
+    {
+      "name": "5. Assign seeded Bob and create email job",
+      "event": [
         {
-          "name": "Get notification job",
-          "request": {
-            "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/jobs/{{jobId}}"
+          "listen": "test",
+          "script": {
+            "exec": ["pm.collectionVariables.set('jobId', pm.response.json().notification_job_id);"]
           }
         }
-      ]
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/tasks/{{taskId}}/assignments",
+        "body": { "mode": "raw", "raw": "{\"user_id\":\"{{assigneeId}}\"}" }
+      }
+    },
+    {
+      "name": "6. Get notification job",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+        "url": "{{baseUrl}}/jobs/{{jobId}}"
+      }
     }
   ]
 }

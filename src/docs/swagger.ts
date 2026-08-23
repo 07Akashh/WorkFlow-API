@@ -125,9 +125,22 @@ export const docs = {
     summary: "Sign in to an organization",
     body: object(
       {
-        email: { type: "string", format: "email" },
-        password: { type: "string", minLength: 1, format: "password" },
-        organization_slug: { type: "string", minLength: 1 },
+        email: {
+          type: "string",
+          format: "email",
+          description: "Seeded demo: aonecreations1+alicejohnson@gmail.com",
+        },
+        password: {
+          type: "string",
+          minLength: 1,
+          format: "password",
+          description: "Seeded demo password: TaskFlowDev@123",
+        },
+        organization_slug: {
+          type: "string",
+          minLength: 1,
+          description: "Seeded demo organization: acme-labs (Alice) or nova-systems (David)",
+        },
       },
       ["email", "password", "organization_slug"],
     ),
