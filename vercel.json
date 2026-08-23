@@ -2,11 +2,13 @@
   "services": {
     "api": {
       "root": "./",
-      "entrypoint": "Dockerfile.vercel"
+      "entrypoint": "Dockerfile.vercel",
+      "framework": null
     },
     "worker": {
       "root": "./",
-      "entrypoint": "Dockerfile.worker.vercel"
+      "entrypoint": "Dockerfile.worker.vercel",
+      "framework": null
     }
   },
   "rewrites": [
