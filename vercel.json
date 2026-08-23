@@ -3,12 +3,12 @@
     "api": {
       "root": "./",
       "entrypoint": "Dockerfile.vercel",
-      "framework": null
+      "framework": "other"
     },
     "worker": {
       "root": "./",
       "entrypoint": "Dockerfile.worker.vercel",
-      "framework": null
+      "framework": "other"
     }
   },
   "rewrites": [
