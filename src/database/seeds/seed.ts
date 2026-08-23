@@ -75,7 +75,7 @@ async function seed(): Promise<void> {
       const alice = await userRepository.save(
         userRepository.create({
           name: "Alice Johnson",
-          email: "alice@acme.test",
+          email: "aonecreations1+alicejohnson@gmail.com",
           passwordHash,
           isActive: true,
         }),
@@ -84,7 +84,7 @@ async function seed(): Promise<void> {
       const bob = await userRepository.save(
         userRepository.create({
           name: "Bob Smith",
-          email: "bob@acme.test",
+          email: "aonecreations1+bobsmith@gmail.com",
           passwordHash,
           isActive: true,
         }),
@@ -93,7 +93,7 @@ async function seed(): Promise<void> {
       const carol = await userRepository.save(
         userRepository.create({
           name: "Carol Williams",
-          email: "carol@acme.test",
+          email: "aonecreations1+carolwilliams@gmail.com",
           passwordHash,
           isActive: true,
         }),
@@ -102,7 +102,7 @@ async function seed(): Promise<void> {
       const david = await userRepository.save(
         userRepository.create({
           name: "David Miller",
-          email: "david@nova.test",
+          email: "aonecreations1+davidmiller@gmail.com",
           passwordHash,
           isActive: true,
         }),
@@ -111,7 +111,7 @@ async function seed(): Promise<void> {
       const eva = await userRepository.save(
         userRepository.create({
           name: "Eva Brown",
-          email: "eva@nova.test",
+          email: "aonecreations1+evabrown@gmail.com",
           passwordHash,
           isActive: true,
         }),
