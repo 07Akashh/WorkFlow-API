@@ -1,0 +1,16 @@
+{
+  "services": {
+    "api": {
+      "root": "./",
+      "entrypoint": "Dockerfile.vercel"
+    },
+    "worker": {
+      "root": "./",
+      "entrypoint": "Dockerfile.worker.vercel"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": { "service": "api" } },
+    { "source": "/(.*)", "destination": { "service": "api" } }
+  ]
+}
