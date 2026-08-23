@@ -1,4 +1,3 @@
-export { BackgroundWorker } from "@cloudflare/containers";
 
 export default {
   async fetch(request, env, ctx) {
