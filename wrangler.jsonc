@@ -2,7 +2,7 @@
     "$schema": "node_modules/wrangler/config-schema.json",
     "name": "workflow-api",
     "main": "src/workers/deploy-trigger.js",
-    "compatibility_date": "2026-08-24",
+    "compatibility_date": "2024-04-01",
     "compatibility_flags": [
         "nodejs_compat"
     ],
