@@ -1,0 +1,119 @@
+{
+  "info": {
+    "name": "TaskFlow API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "accessToken", "value": "" },
+    { "key": "projectId", "value": "" },
+    { "key": "taskId", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "jobId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Ada Lovelace\",\n  \"email\": \"ada@example.com\",\n  \"password\": \"StrongPassword123!\",\n  \"organization_name\": \"Example Org\",\n  \"organization_slug\": \"example-org\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const body = pm.response.json();",
+              "pm.collectionVariables.set('accessToken', body.access_token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"ada@example.com\",\n  \"password\": \"StrongPassword123!\",\n  \"organization_slug\": \"example-org\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Create project",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/projects",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"Website refresh\",\"description\":\"Q4 project\"}"
+            }
+          }
+        },
+        {
+          "name": "List projects",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/projects?limit=20"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Create task",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/projects/{{projectId}}/tasks",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\":\"Create wireframes\",\"priority\":\"high\"}"
+            }
+          }
+        },
+        {
+          "name": "Assign user",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/tasks/{{taskId}}/assignments",
+            "body": { "mode": "raw", "raw": "{\"user_id\":\"{{userId}}\"}" }
+          }
+        },
+        {
+          "name": "Get notification job",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/jobs/{{jobId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
