@@ -9,6 +9,12 @@ export const redis = new Redis(env.REDIS_URL, {
   enableReadyCheck: true,
 });
 
+// ioredis emits connection failures as EventEmitter errors. Handling them here
+// keeps transient Redis outages observable without creating an unhandled error.
+redis.on("error", (error) => {
+  console.error("Redis connection error", error.message);
+});
+
 export async function connectRedis(): Promise<void> {
   if (redis.status === "ready") {
     return;

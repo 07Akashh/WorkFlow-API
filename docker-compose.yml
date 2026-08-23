@@ -75,7 +75,7 @@ services:
 
       DATABASE_URL: postgresql://${POSTGRES_USER:-taskflow}:${POSTGRES_PASSWORD:-taskflow_dev_password}@postgres:5432/${POSTGRES_DB:-taskflow}
 
-      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      REDIS_URL: redis://redis:6379
       JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change-this-development-secret-to-at-least-32-characters}
       EMAIL_FROM: ${EMAIL_FROM:-TaskFlow <no-reply@taskflow.local>}
       SMTP_HOST: ${SMTP_HOST:-}
@@ -128,7 +128,7 @@ services:
 
       DATABASE_URL: postgresql://${POSTGRES_USER:-taskflow}:${POSTGRES_PASSWORD:-taskflow_dev_password}@postgres:5432/${POSTGRES_DB:-taskflow}
 
-      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      REDIS_URL: redis://redis:6379
       JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change-this-development-secret-to-at-least-32-characters}
       EMAIL_FROM: ${EMAIL_FROM:-TaskFlow <no-reply@taskflow.local>}
       SMTP_HOST: ${SMTP_HOST:-}
