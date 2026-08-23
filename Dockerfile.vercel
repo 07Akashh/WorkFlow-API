@@ -33,4 +33,4 @@ USER node
 
 ENV PORT=3000
 
-CMD ["sh", "-c", "node dist/config/database.js && node dist/server.js"]
+CMD ["node", "dist/server.js"]
