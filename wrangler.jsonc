@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-github-automated-worker",
+  "main": "src/index.ts", // Leave this file exactly as it is!
+  "compatibility_date": "2026-08-24",
+  "containers": [
+    {
+      "class_name": "BackgroundWorker",
+      "image": "./Dockerfile.worker.vercel" // Force Cloudflare to look at your Vercel file
+    }
+  ]
+}
