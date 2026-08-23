@@ -1,12 +1,21 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "my-github-automated-worker",
+  "name": "workflow-api",
   "main": "src/workers/deploy-trigger.js",
   "compatibility_date": "2026-08-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "BackgroundWorker", 
+        "class_name": "BackgroundWorker"
+      }
+    ]
+  },
   "containers": [
     {
       "class_name": "BackgroundWorker",
-      "image": "./Dockerfile.worker.vercel"
+      "image": "./Dockerfile.worker.vercel" 
     }
   ]
 }
