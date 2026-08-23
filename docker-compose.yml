@@ -64,8 +64,9 @@ services:
     restart: unless-stopped
 
     command:
-      - node
-      - dist/server.js
+      - sh
+      - -c
+      - ./node_modules/.bin/typeorm migration:run -d dist/config/database.js && node dist/server.js
 
     environment:
       NODE_ENV: production
@@ -137,6 +138,9 @@ services:
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
 
     depends_on:
+      api:
+        condition: service_healthy
+
       postgres:
         condition: service_healthy
 
