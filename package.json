@@ -15,6 +15,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:integration": "RUN_INTEGRATION=true NODE_ENV=test vitest run tests/integration --pool=forks --no-file-parallelism",
+    "test:api": "docker compose -f docker-compose.test.yml up -d --wait && NODE_ENV=test DATABASE_URL=postgresql://taskflow:taskflow_test_password@localhost:5433/taskflow_test REDIS_URL=redis://localhost:6380 JWT_ACCESS_SECRET=test-secret-must-be-at-least-32-characters-long TEST_USER_PASSWORD=\"${TEST_USER_PASSWORD:-TaskFlowDev@123}\" npm run test:integration",
     "test:watch": "vitest",
     "lint": "eslint .",
     "format": "prettier --write .",
