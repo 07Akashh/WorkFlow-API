@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "my-github-automated-worker",
-  "main": "src/index.js",
+  "main": "src/workers/deploy-trigger.js",
   "compatibility_date": "2026-08-24",
   "containers": [
     {
