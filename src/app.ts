@@ -30,14 +30,14 @@ export function buildApp(options: BuildAppOptions = {}): FastifyInstance {
       transport:
         env.NODE_ENV === "development"
           ? {
-              target: "pino-pretty",
+            target: "pino-pretty",
 
-              options: {
-                translateTime: "SYS:standard",
+            options: {
+              translateTime: "SYS:standard",
 
-                ignore: "pid,hostname",
-              },
-            }
+              ignore: "pid,hostname",
+            },
+          }
           : undefined,
     },
   });
@@ -53,7 +53,7 @@ export function buildApp(options: BuildAppOptions = {}): FastifyInstance {
         description: "Multi-tenant project-management API",
         version: "1.0.0",
       },
-      servers: [{ url: "http://localhost:3000", description: "Local development" }],
+      servers: [{ url: "http://localhost:3000", description: "Local development" }, { url: "https://devtrack-api.vercel.app", description: "Production" }],
       components: swaggerComponents as never,
     },
   });
