@@ -1,3 +1,4 @@
+export class BackgroundWorker {}
 
 export default {
   async fetch(request, env, ctx) {
