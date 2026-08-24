@@ -1,29 +1,37 @@
 {
-    "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "workflow-api",
-    "main": "src/workers/deploy-trigger.js",
-    "compatibility_date": "2024-04-01",
-    "compatibility_flags": [
-        "nodejs_compat"
-    ],
-    "exports": {
-        "BackgroundWorker": {
-            "type": "durable-object",
-            "storage": "sqlite"
-        }
-    },
-    "durable_objects": {
-        "bindings": [
-            {
-                "name": "BackgroundWorker",
-                "class_name": "BackgroundWorker"
-            }
-        ]
-    },
-    "containers": [
-        {
-            "class_name": "BackgroundWorker",
-            "image": "./Dockerfile.worker.vercel"
-        }
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  "name": "workflow-api",
+
+  "main": "src/workers/deploy-trigger.js",
+
+  "compatibility_date": "2026-08-23",
+
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+
+  "exports": {
+    "BackgroundWorker": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    }
+  },
+
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "BackgroundWorker",
+        "class_name": "BackgroundWorker"
+      }
     ]
+  },
+
+  "containers": [
+    {
+      "class_name": "BackgroundWorker",
+      "image": "./Dockerfile.worker.vercel",
+      "max_instances": 1
+    }
+  ]
 }
